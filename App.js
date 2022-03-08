@@ -8,6 +8,11 @@ import {
 } from 'react-native-vision-camera';
 import Svg, {G, Circle, Polyline, Polygon} from 'react-native-svg';
 
+//引入
+const Dimensionsss = require('Dimensions');
+ 
+const {width, height, scale} = Dimensions.get('window');
+console.log(width,height,height)
 console.log('in app.js');
 
 export function MoveNet(frame) {
@@ -279,8 +284,8 @@ function transformPoints(
     let x = onePerson[k][0],
       y = onePerson[k][1];
 
-    onePerson[k][0] = (imageHeight - y) * ratioX;
-    onePerson[k][1] = x * ratioY;
+    onePerson[k][0] = (imageHeight-y) * ratioX;
+    onePerson[k][1] = (imageWidth- x) * ratioY;
   }
 }
 
@@ -298,6 +303,7 @@ export default function App() {
     // frame: w 960 h 540
     'worklet';
     console.log('[-----------FRAME-----------]');
+    console.log(frame.width, frame.height);
     let result = MoveNet(frame);
     runOnJS(setPoints)(result);
   }, []);
@@ -330,14 +336,14 @@ export default function App() {
         isActive={true}
         orientation="portraitUpsideDown"
         frameProcessor={frameProcessor}
-        frameProcessorFps={5}
+        frameProcessorFps={10}
       />
       <SVGgraph
         points={points}
-        imageWidth={960}
-        imageHeight={540}
-        screenWidth={360}
-        screenHeight={719.67}
+        imageWidth={640}
+        imageHeight={480}
+        screenWidth={width}
+        screenHeight={height}
       />
       {/* <Text style={styles.box}>Hi</Text> */}
     </>
